@@ -8,6 +8,7 @@ mongoose.set('strictQuery', false);
 const File= require('./models/File');
 const app = express();
 const PORT= process.env.PORT;
+app.use(express.urlencoded({externals: true}));
 
 const upload= multer({dest:"uploads"})
 
@@ -29,9 +30,26 @@ app.post('/upload',upload.single("file"),  async (req, res)=>{
     }
 
     const file= await File.create(fileData)
-    console.log(file);
-    res.send(file.originalName);
+   
+    res.render("welcome", {fileLink :`${req.headers.origin}/file/${file.id}`})
 })
 
+app.get('/file/:id',handleDownload)
+app.post('/file/:id',handleDownload)
+async function handleDownload(req, res) {
+    const file= await File.findById(req.params.id)
+    if(req.body.password == null){
+        res.render('password')
+        return
+    }
+    if(!await bcrypt.compare(req.body.password,file.password)){
+    res.render("password",{error:true})
+    }
 
+    file.downloadCount++
+    await file.save()
+    console.log(file.downloadCount)
+
+    res.download(file.path,file.originalName)
+}
 app.listen(PORT, console.log("Server running ",PORT))

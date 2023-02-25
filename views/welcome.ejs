@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Share</title>
+</head>
+<body>
+    <div class="bg-blue-400 block">
+        <form action="/upload" method="post"  enctype="multipart/form-data">
+            <label for="file">Upload file</label>
+            <input type="file" name="file" id="file" required/>
+            <label for="password">Enter password</label>
+            <input type="password" name="password" id="password" placeholder="enter password" required/>
+            <button type="submit" class="bg-green-400 border-solid border-2 border-black-500 hover:border-dotted p-1">Submit</button>
+        </form>
+    </div>
+</body>
+</html>

@@ -34,8 +34,11 @@ app.post('/upload',upload.single("file"),  async (req, res)=>{
     res.render("welcome", {fileLink :`${req.headers.origin}/file/${file.id}`})
 })
 
-app.get('/file/:id',handleDownload)
-app.post('/file/:id',handleDownload)
+// app.get('/file/:id',handleDownload)
+// app.post('/file/:id',handleDownload) same as down below
+
+app.route("/file/:id").get(handleDownload).post(handleDownload);
+
 async function handleDownload(req, res) {
     const file= await File.findById(req.params.id)
     if(req.body.password == null){
